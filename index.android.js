@@ -11,17 +11,21 @@ import {
   Text,
   View
 } from 'react-native';
-import Login from './components/login';
+import Loogin from './loogin';
 
 export default class login extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Login />
+        <Loogin  onlogin={this.onlogin}/>
       </View>
     );
   }
+onlogin(){
+  console.log("return this is onLogin funtion from the onLogin00");
 }
+}
+
 
 const styles = StyleSheet.create({
   container: {

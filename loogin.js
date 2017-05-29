@@ -2,7 +2,8 @@
 
 import React, { Component } from 'react';
 import * as Progress from 'react-native-progress';
-import buffer from 'buffer';
+import authService from './AuthService';
+
 import {
   
   StyleSheet,
@@ -11,9 +12,10 @@ import {
   View
 } from 'react-native';
 
-export default class login extends Component {
+export default class Loogin extends Component {
     constructor(props){
-        super(props)
+        super(props);
+
          this.state={
              username:'sometext',
              password:'sometext',
@@ -22,7 +24,15 @@ export default class login extends Component {
          //         progress:0
          }
     }
+
     render(){
+        var errCtrl=<View />
+        if(!this.state.success && this.state.badCredentials){
+            errCtrl=<Text style={styles.error} >this is a bad credentials</Text>
+        }
+        if(!this.state.success && this.state.unknownError){
+            errCtrl=<Text style={styles.error}> this is unknown error</Text> 
+        }
         return (
             <View style={styles.container}>
                 {/*<Image style={styles.logo} source={require('image!Octocat')} />*/}
@@ -44,6 +54,7 @@ export default class login extends Component {
                 style={styles.button}>
                     <Text style={styles.buttonText}>Log in</Text>
                 </TouchableHighlight>
+                {errCtrl}
                <Progress.Circle style={styles.loader}  
                indeterminate={this.state.indeterminate}
               
@@ -54,29 +65,26 @@ export default class login extends Component {
         );
     }
  onLoginPressed() {
-    let url='https://api.github.com/user';
+   
     console.log("u are name is " + this.state.username);
-    this.setState({indeterminate:true})
-    var b =buffer.Buffer(this.state.username + ':' + this.state.password);
-    var encode=b.toString('base64');
-   fetch(url, { 
-   method: 'post', 
-   headers: {
-     'Authorization': 'Basic '+ encode,
-     'Content-Type': 'application/x-www-form-urlencoded'
-   }, 
-   body: 'A=1&B=2'
- })
-        .then((response)=>{
-            return response.json();
-        })
-        .then((result)=>{
-            console.log(result);
-            this.setState({indeterminate:false})
-        })
-
-
-}}
+    this.setState({indeterminate:true});
+    //var authService = require('./AuthService');
+    authService.login({
+           
+                username:this.state.username,
+                password:this.state.password
+     },(result)=>{
+         this.setState(Object.assign({
+             indeterminate:false
+         }, result))
+         if(results.success && this.props.onLogin){
+                this.props.onLogin();
+            }
+     }
+    );
+}
+   
+   }
 
 const styles = StyleSheet.create({
     container: {
@@ -123,6 +131,10 @@ const styles = StyleSheet.create({
     buttonText: {
         color: '#fff',
         fontSize: 24
+    },
+    error:{
+        color:'red'
+
     }
 });
 
