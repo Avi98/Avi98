@@ -14,15 +14,36 @@ import {
 import Loogin from './loogin';
 
 export default class login extends Component {
+  constructor(props){
+    super(props);
+
+    this.state={
+             isLogin:false
+         }
+  }
   render() {
-    return (
-      <View style={styles.container}>
+   
+      if(!this.state.isLogin){
+        return(
+          <View style={styles.container}>
+          <Text style={styles.welcome}>is logend in</Text>
+          </View> 
+
+        );
+      }
+      else{
+        return(
+
+    <View style={styles.container}>
         <Loogin  onlogin={this.onlogin}/>
       </View>
-    );
+        );
+      }
   }
 onlogin(){
-  console.log("return this is onLogin funtion from the onLogin00");
+  this.setState({
+    isLogin:true
+  })
 }
 }
 

@@ -1,7 +1,10 @@
 import buffer from 'buffer';
 import React,{Component} from'react';
 
-export  class authService extends Component{
+ export  class authService extends Component {
+     constructor(props){
+         super(props);
+     }
     login(creds,cb){
 
      var b =buffer.Buffer(creds.username + ':' + creds.password);
