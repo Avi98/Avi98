@@ -12,6 +12,7 @@ import {
   View
 } from 'react-native';
 import Loogin from './loogin';
+import AppContainer from './appContainer';
 
 export default class login extends Component {
   constructor(props){
@@ -24,12 +25,9 @@ export default class login extends Component {
   render() {
    
       if(!this.state.isLogin){
-        return(
-          <View style={styles.container}>
-          <Text style={styles.welcome}>is logend in</Text>
-          </View> 
-
-        );
+      return(
+          <AppContainer />
+      );
       }
       else{
         return(
